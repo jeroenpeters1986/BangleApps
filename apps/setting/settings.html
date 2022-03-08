@@ -1,0 +1,150 @@
+<html>
+<head>
+    <link rel="stylesheet" href="../../css/spectre.min.css">
+</head>
+<body>
+
+    <div class="form-group">
+        <label class="form-switch" for="ble">
+            <input type="checkbox" id="ble" name="ble"/>
+            <i class="form-icon"></i> Bluetooth ON
+        </label>
+    </div>
+
+    <div class="form-group">
+        <label class="form-switch" for="blerepl">
+            <input type="checkbox" id="blerepl" name="blerepl"/>
+            <i class="form-icon"></i> Make programmable
+        </label>
+    </div>
+
+    <div class="form-group">
+        <label class="form-switch" for="log">
+            <input type="checkbox" id="log" name="log"/>
+            <i class="form-icon"></i> Show debug log
+        </label>
+    </div>
+
+    <div class="form-group">
+        <label for="quiet">Quiet mode</label>
+        <select class="form-select" id="quiet">
+            <option value="0">Off</option>
+            <option value="1">Priority only</option>
+            <option value="2">Total silence</option>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="timeout">LCD Timeout</label>
+        <select class="form-select" id="timeout">
+            <option>1</option>
+            <option>2</option>
+            <option>3</option>
+            <option>4</option>
+            <option>5</option>
+            <option>6</option>
+            <option>7</option>
+            <option>8</option>
+            <option>9</option>
+            <option>10</option>
+            <option>15</option>
+            <option>20</option>
+            <option>25</option>
+            <option>30</option>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="brightness">LCD Brightness</label>
+        <select class="form-select" id="brightness">
+            <option>1</option>
+            <option>0.9</option>
+            <option>0.8</option>
+            <option>0.7</option>
+            <option>0.6</option>
+            <option>0.5</option>
+            <option>0.4</option>
+            <option>0.3</option>
+            <option>0.3</option>
+            <option>0.2</option>
+            <option>0.1</option>
+            <option>0</option>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label class="form-switch" for="12hour">
+            <input type="checkbox" id="12hour" name="12hour"/>
+            <i class="form-icon"></i> Use the 12-hour clock (AM/PM)
+        </label>
+    </div>
+
+
+    <div class="form-group">
+        <label class="form-switch" for="vibrate">
+            <input type="checkbox" id="vibrate" name="vibrate"/>
+            <i class="form-icon"></i> Vibrate
+        </label>
+    </div>
+
+    <p><button id="upload" class="btn btn-primary"><i class="icon-upward"></i> Upload</button></p>
+
+<script src="../../core/lib/customize.js"></script>
+
+<script>
+    function generateSettings() {
+
+        var setting_ble = document.getElementById("ble").checked;
+        var setting_blerepl = document.getElementById("blerepl").checked;
+        var setting_log = document.getElementById("log").checked;
+        var setting_hid = document.getElementById("hid").checked;
+        var setting_quiet = parseInt(document.getElementById("quiet").value);
+        var setting_timeout = parseInt(document.getElementById("timeout").value);
+        var setting_12hour = document.getElementById("12hour").checked;
+        var setting_vibrate = document.getElementById("vibrate").checked;
+        var setting_brightness = document.getElementById("brightness").value;
+
+        return {
+            ble: setting_ble,             // Bluetooth enabled by default
+            blerepl: setting_blerepl,         // Is REPL on Bluetooth - can Espruino IDE be used?
+            log: setting_log,            // Do log messages appear on screen?
+            quiet: setting_quiet,              // quiet mode:  0: off, 1: priority only, 2: total silence
+            timeout: setting_timeout,           // Default LCD timeout in seconds
+            vibrate: setting_vibrate,         // Vibration enabled by default. App must support
+            // TODO: beep: BANGLEJS2?true:"vib",            // Beep enabled by default. App must support
+            timezone: 0,           // Set the timezone for the device
+            HID: setting_hid,           // BLE HID mode, off by default
+            // TODO: clock: null,           // a string for the default clock's name
+            "12hour" : setting_12hour,      // 12 or 24 hour clock?
+            brightness: setting_brightness,       // LCD brightness from 0 to 1
+            // welcomed : undefined/true (whether welcome app should show)
+            options: {
+                wakeOnBTN1: true,
+                wakeOnBTN2: true,
+                wakeOnBTN3: true,
+                wakeOnFaceUp: false,
+                wakeOnTouch: false,
+                wakeOnTwist: true,
+                twistThreshold: 819.2,
+                twistMaxY: -800,
+                twistTimeout: 1000
+            },
+        };
+    }
+
+    // When the 'upload' button is clicked...
+    document.getElementById("upload").addEventListener("click", function() {
+
+        console.log(generateSettings());
+
+        // send finished app (in addition to contents of app.json)
+        sendCustomizedApp({
+            storage:[
+                {name:"setting.bier.js", url:"app.bier.js", content:generateSettings()},
+            ]
+        });
+    });
+
+</script>
+</body>
+</html>

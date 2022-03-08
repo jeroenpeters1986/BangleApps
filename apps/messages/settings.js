@@ -27,7 +27,7 @@
     },
     /*LANG*/'Repeat': {
       value: settings().repeat,
-      min: 0, max: 10,
+      min: 0, max: 15,
       format: v => v?v+"s":/*LANG*/"Off",
       onchange: v => updateSetting("repeat", v)
     },
