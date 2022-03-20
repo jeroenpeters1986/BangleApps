@@ -136,7 +136,7 @@
                 twistMaxY: -800,
                 twistTimeout: 1000
             },
-        };
+        }
     }
 
     // When the 'upload' button is clicked...
@@ -147,7 +147,7 @@
         // send finished app (in addition to contents of app.json)
         sendCustomizedApp({
             storage:[
-                {name:"setting.json", url:"setting.json", content:generateSettings()},
+                {name:"setting.json", url:"setting.json", content:JSON.stringify(generateSettings())},
             ]
         });
     });
