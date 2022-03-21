@@ -5,6 +5,7 @@
   "description": "Change your Bangle's settings from the web, no app will be installed",
   "icon": "websettings.png",
   "tags": "tool,system",
+  "type": "RAM",
   "supports": ["BANGLEJS2"],
   "readme": "README.md",
   "custom": "custom-settings.html",
