@@ -81,7 +81,6 @@
         </label>
     </div>
 
-
     <div class="form-group">
         <label class="form-switch" for="vibrate">
             <input type="checkbox" id="vibrate" name="vibrate"/>
@@ -95,6 +94,34 @@
             <option>Light</option>
             <option>Dark</option>
         </select>
+    </div>
+
+    <div class="form-group">
+        <label class="form-switch" for="wakebtn1">
+            <input type="checkbox" id="wakebtn1" name="wakebtn1"/>
+            <i class="form-icon"></i> Wake on BTN1
+        </label>
+    </div>
+
+    <div class="form-group">
+        <label class="form-switch" for="wakefaceup">
+            <input type="checkbox" id="wakefaceup" name="wakefaceup"/>
+            <i class="form-icon"></i> Wake on Face Up
+        </label>
+    </div>
+
+    <div class="form-group">
+        <label class="form-switch" for="waketouch">
+            <input type="checkbox" id="waketouch" name="waketouch"/>
+            <i class="form-icon"></i> Wake on Touch
+        </label>
+    </div>
+
+    <div class="form-group">
+        <label class="form-switch" for="waketwist">
+            <input type="checkbox" id="waketwist" name="waketwist"/>
+            <i class="form-icon"></i> Wake on Twist
+        </label>
     </div>
 
     <p><button id="upload" class="btn btn-primary"><i class="icon-upward"></i> Upload</button></p>
@@ -123,6 +150,10 @@
         let setting_timeout = parseInt(document.getElementById("timeout").value);
         let setting_12hour = document.getElementById("12hour").checked;
         let setting_vibrate = document.getElementById("vibrate").checked;
+        let setting_wakebtn1 = document.getElementById("wakebtn1").checked;
+        let setting_wakefaceup = document.getElementById("wakefaceup").checked;
+        let setting_waketouch = document.getElementById("waketouch").checked;
+        let setting_waketwist = document.getElementById("waketwist").checked;
         let setting_theme = document.getElementById("theme").value;
 
         let setting_brightness = document.getElementById("brightness").value;
@@ -133,31 +164,31 @@
             setting_brightness = parseFloat(setting_brightness).toFixed(1)
         }
 
-        let tz = (new Date()).getTimezoneOffset()/-60;
+        let tz = ;
         console.log("TZ: ", tz);
 
         let settings = {
-            ble: setting_ble,             // Bluetooth enabled by default
-            blerepl: setting_blerepl,         // Is REPL on Bluetooth - can Espruino IDE be used?
-            log: setting_log,            // Do log messages appear on screen?
-            quiet: setting_quiet,              // quiet mode:  0: off, 1: priority only, 2: total silence
-            timeout: setting_timeout,           // Default LCD timeout in seconds
-            vibrate: setting_vibrate,         // Vibration enabled by default. App must support
+            ble: setting_ble,                               // Bluetooth enabled by default
+            blerepl: setting_blerepl,                       // Is REPL on Bluetooth - can Espruino IDE be used?
+            log: setting_log,                               // Do log messages appear on screen?
+            quiet: setting_quiet,                           // quiet mode:  0: off, 1: priority only, 2: total silence
+            timeout: setting_timeout,                       // Default LCD timeout in seconds
+            vibrate: setting_vibrate,                       // Vibration enabled by default. App must support
             // TODO: beep: BANGLEJS2?true:"vib",            // Beep enabled by default. App must support
-            timezone: 0,           // Set the timezone for the device
-            HID: setting_hid,           // BLE HID mode, off by default
-            // TODO: clock: null,           // a string for the default clock's name
-            "12hour" : setting_12hour,      // 12 or 24 hour clock?
-            brightness: setting_brightness,       // LCD brightness from 0 to 1
-            welcomed : false,
+            timezone: (new Date()).getTimezoneOffset()/-60, // Set the timezone for the device
+            HID: setting_hid,                               // BLE HID mode, off by default
+            // TODO: clock: null,                              // a string for the default clock's name
+            "12hour" : setting_12hour,                      // 12 or 24 hour clock?
+            brightness: setting_brightness,                 // LCD brightness from 0 to 1
+            welcomed : false,                               // Show the welcome app
             options: {
-                wakeOnBTN1: true,
+                wakeOnBTN1: setting_wakebtn1,
                 wakeOnBTN2: true,
                 wakeOnBTN3: true,
-                wakeOnFaceUp: false,
-                wakeOnTouch: false,
-                wakeOnTwist: true,
-                twistThreshold: 819.2,
+                wakeOnFaceUp: setting_wakefaceup,
+                wakeOnTouch: setting_waketouch,
+                wakeOnTwist: setting_waketwist,
+                twistThreshold: 1638.4,
                 twistMaxY: -800,
                 twistTimeout: 1000
             },
