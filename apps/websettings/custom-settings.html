@@ -4,6 +4,9 @@
 </head>
 <body>
 
+
+    <h3>Bluetooth / BLE</h3>
+
     <div class="form-group">
         <label class="form-switch" for="ble">
             <input type="checkbox" id="ble" name="ble"/>
@@ -25,24 +28,14 @@
         </label>
     </div>
 
+
+
+    <h3>LCD / Screen</h3>
+
     <div class="form-group">
-        <label class="form-switch" for="hid">
-            <input type="checkbox" id="hid" name="hid"/>
-            <i class="form-icon"></i> Act as HID
+        <label for="timeout">LCD Timeout
+            <br><small>Seconds to keep the backlight on</small>
         </label>
-    </div>
-
-    <div class="form-group">
-        <label for="quiet">Quiet mode</label>
-        <select class="form-select" id="quiet">
-            <option value="0">Off</option>
-            <option value="1">Priority only</option>
-            <option value="2">Total silence</option>
-        </select>
-    </div>
-
-    <div class="form-group">
-        <label for="timeout">LCD Timeout</label>
         <select class="form-select" id="timeout">
             <option>5</option>
             <option>10</option>
@@ -72,20 +65,6 @@
             <option>0.1</option>
             <option>0</option>
         </select>
-    </div>
-
-    <div class="form-group">
-        <label class="form-switch" for="12hour">
-            <input type="checkbox" id="12hour" name="12hour"/>
-            <i class="form-icon"></i> Use the 12-hour clock (AM/PM)
-        </label>
-    </div>
-
-    <div class="form-group">
-        <label class="form-switch" for="vibrate">
-            <input type="checkbox" id="vibrate" name="vibrate"/>
-            <i class="form-icon"></i> Vibrate
-        </label>
     </div>
 
     <div class="form-group">
@@ -123,6 +102,45 @@
             <i class="form-icon"></i> Wake on Twist
         </label>
     </div>
+
+
+
+    <h3>Notifications</h3>
+
+    <div class="form-group">
+        <label for="quiet">Quiet mode</label>
+        <select class="form-select" id="quiet">
+            <option value="0">Off</option>
+            <option value="1">Priority only</option>
+            <option value="2">Total silence</option>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label class="form-switch" for="vibrate">
+            <input type="checkbox" id="vibrate" name="vibrate"/>
+            <i class="form-icon"></i> Vibrate
+        </label>
+    </div>
+
+
+
+    <h3>Misc</h3>
+
+    <div class="form-group">
+        <label class="form-switch" for="12hour">
+            <input type="checkbox" id="12hour" name="12hour"/>
+            <i class="form-icon"></i> Use the 12-hour clock (AM/PM)
+        </label>
+    </div>
+
+    <div class="form-group">
+        <label class="form-switch" for="hid">
+            <input type="checkbox" id="hid" name="hid"/>
+            <i class="form-icon"></i> Act as HID
+        </label>
+    </div>
+
 
     <p><button id="upload" class="btn btn-primary"><i class="icon-upward"></i> Upload</button></p>
 
