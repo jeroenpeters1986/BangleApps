@@ -105,7 +105,7 @@
 
 
 
-    <h3>Notifications</h3>
+    <h3>Alerts</h3>
 
     <div class="form-group">
         <label for="quiet">Quiet mode</label>
@@ -147,8 +147,10 @@
 <script src="../../core/lib/customize.js"></script>
 
 <script>
-    var isB1; // is Bangle.js 1?
-    var isB2; // is Bangle.js 2?
+    let isB1; // is Bangle.js 1?
+    let isB2; // is Bangle.js 2?
+
+    let currentSettings = [];
 
     // Called when we know what device we're using
     function onInit(device) {
@@ -156,6 +158,22 @@
         isB1 = !isB2;
         console.log("Bangle1:", isB1);
         console.log("Bangle2:", isB2);
+
+        Comms.reset().
+        then(() => {
+            var promise = Promise.resolve();
+            Progress.show({title:"Retrieving settings...",sticky:true});
+
+                promise = promise.then(() => {
+
+                    return Comms.readFile('setting.json').then(data => { Progress.hide({sticky: true}); currentSettings = data;});
+                });
+            return promise;
+        }).catch(err => {
+        Progress.hide({ sticky: true });
+        showToast('Backup failed, ' + err, 'error');
+    });
+
     }
 
     function generateSettings() {
