@@ -3,8 +3,6 @@
     <link rel="stylesheet" href="../../css/spectre.min.css">
 </head>
 <body>
-
-
     <h3>Bluetooth / BLE</h3>
 
     <div class="form-group">
@@ -144,9 +142,11 @@
 
     <p><button id="upload" class="btn btn-primary"><i class="icon-upward"></i> Upload</button></p>
 
-<script src="../../core/lib/customize.js"></script>
 
-<script>
+    <script src="../../core/lib/customize.js"></script>
+    <script src="../../core/js/comms.js"></script>
+
+    <script>
     let isB1; // is Bangle.js 1?
     let isB2; // is Bangle.js 2?
 
@@ -248,13 +248,11 @@
         console.log(generateSettings());
 
         // send finished app (in addition to contents of app.json)
-        sendCustomizedApp({
-            storage:[
-                {name:"setting.json", url:"setting.json", content:JSON.stringify(generateSettings())},
-            ]
-        });
+        sendCustomizedApp({storage:[
+            {name:"setting.json", url:"setting.json", content:JSON.stringify(generateSettings())}
+        ]});
     });
 
-</script>
+    </script>
 </body>
 </html>
