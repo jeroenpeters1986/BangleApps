@@ -169,14 +169,11 @@
             .then(f => {
             storageFiles = f;
             console.log(" - "+f.join(","));
+            let filename = 'setting.json';
             let promise = Promise.resolve();
-            if (storageFiles.length) {
-                storageFiles.forEach((filename,n) => {
                     promise = promise.then(() => {
                         console.log(`Download ${filename}`);
                         return Comms.readStorageFile(filename).then(data => console.log(filename,data));
-                    });
-                });
             }
             return promise;
         }).then(content => {
