@@ -140,9 +140,10 @@
     </div>
 
 
-    <p><button id="upload" class="btn btn-primary"><i class="icon-upward"></i> Upload</button></p>
+    <p><button id="upload" class="btn btn-primary"><i class="icon-upward"></i> Apply settings to Bangle</button></p>
 
 
+    <script src="../../core/js/ui.js"></script>
     <script src="../../core/lib/customize.js"></script>
     <script src="../../core/js/comms.js"></script>
 
@@ -161,13 +162,16 @@
 
         Comms.reset().
         then(() => {
-            var promise = Promise.resolve();
+            let promise = Promise.resolve();
             Progress.show({title:"Retrieving settings...",sticky:true});
 
-                promise = promise.then(() => {
-
-                    return Comms.readFile('setting.json').then(data => { Progress.hide({sticky: true}); currentSettings = data;});
+            promise = promise.then(() => {
+                return Comms.readFile(`setting.json`).then(data => {
+                    Progress.hide({sticky: true});
+                    currentSettings = data;
                 });
+            });
+
             return promise;
         }).catch(err => {
         Progress.hide({ sticky: true });
