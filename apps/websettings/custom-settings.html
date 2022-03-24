@@ -143,9 +143,17 @@
     <p><button id="upload" class="btn btn-primary"><i class="icon-upward"></i> Apply settings to Bangle</button></p>
 
 
+
+    <script src="https://www.puck-js.com/puck.js"></script>
+    <script src="../../core/lib/marked.min.js"></script>
+    <script src="../../core/lib/espruinotools.js"></script>
+    <script src="../../core/js/utils.js"></script>
+    <script src="../../loader.js"></script>
     <script src="../../core/js/ui.js"></script>
-    <script src="../../core/lib/customize.js"></script>
     <script src="../../core/js/comms.js"></script>
+    <script src="../../core/js/appinfo.js"></script>
+    <script src="../../core/js/index.js"></script>
+    <script src="../../core/js/pwa.js" defer></script>
 
     <script>
     let isB1; // is Bangle.js 1?
@@ -161,7 +169,7 @@
         console.log("Bangle2:", isB2);
 
 
-        var normalFiles, storageFiles;
+        let normalFiles, storageFiles;
         console.log("Listing normal files...");
         Comms.reset()
             .then(() => Comms.showMessage("Backing up..."))
@@ -169,13 +177,12 @@
             .then(f => {
             storageFiles = f;
             console.log(" - "+f.join(","));
-            var fileCount = storageFiles.length;
-            var promise = Promise.resolve();
+            let fileCount = storageFiles.length;
+            let promise = Promise.resolve();
             if (storageFiles.length) {
                 storageFiles.forEach((filename,n) => {
                     promise = promise.then(() => {
-                        var percent = (normalFiles.length+n)/fileCount;
-                        console.log({title:`Download ${filename}`,sticky:true,min:percent,max:percent+(1/fileCount),percent:0});
+                        console.log(`Download ${filename}`);
                         return Comms.readStorageFile(filename).then(data => console.log(filename,data));
                     });
                 });
@@ -188,7 +195,7 @@
         }).then(content => {
             console.log('Backup complete!', 'success');
         }).catch(err => {
-            console.log('Backup failed, ' + err, 'error');
+            console.log('Backup failed: ' + err);
         });
     }
 
