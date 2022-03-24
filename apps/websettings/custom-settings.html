@@ -5,6 +5,8 @@
 <body>
     <h3>Bluetooth / BLE</h3>
 
+    <div id="websettingget">Getting settings from watch...</div>
+
     <div class="form-group">
         <label class="form-switch" for="ble">
             <input type="checkbox" id="ble" name="ble"/>
@@ -172,7 +174,10 @@
             let promise = Promise.resolve();
             promise = promise.then(() => {
                 console.log(`Download ${filename}`);
-                return Comms.readStorageFile(filename).then(data => { console.log(filename, data) });
+                return Comms.readStorageFile(filename).then(data => {
+                    console.log(filename, data);
+                    currentSettings = data;
+                });
             });
             return promise;
         }).then(content => {
