@@ -143,17 +143,9 @@
     <p><button id="upload" class="btn btn-primary"><i class="icon-upward"></i> Apply settings to Bangle</button></p>
 
 
-
-    <script src="https://www.puck-js.com/puck.js"></script>
-    <script src="../../core/lib/marked.min.js"></script>
-    <script src="../../core/lib/espruinotools.js"></script>
-    <script src="../../core/js/utils.js"></script>
-    <script src="../../loader.js"></script>
     <script src="../../core/js/ui.js"></script>
+    <script src="../../core/lib/customize.js"></script>
     <script src="../../core/js/comms.js"></script>
-    <script src="../../core/js/appinfo.js"></script>
-    <script src="../../core/js/index.js"></script>
-    <script src="../../core/js/pwa.js" defer></script>
 
     <script>
     let isB1; // is Bangle.js 1?
@@ -175,25 +167,8 @@
             .then(() => Comms.showMessage("Backing up..."))
             .then(() => Comms.listFiles({sf:true}))
             .then(f => {
-            storageFiles = f;
-            console.log(" - "+f.join(","));
-            let fileCount = storageFiles.length;
-            let promise = Promise.resolve();
-            if (storageFiles.length) {
-                storageFiles.forEach((filename,n) => {
-                    promise = promise.then(() => {
-                        console.log(`Download ${filename}`);
-                        return Comms.readStorageFile(filename).then(data => console.log(filename,data));
-                    });
-                });
-            }
-            return promise;
-        }).then(() => {
-            return "reload";
-        }).then(() => {
-            return "top";
-        }).then(content => {
-            console.log('Backup complete!', 'success');
+                console.log(f);
+                return true;
         }).catch(err => {
             console.log('Backup failed: ' + err);
         });
