@@ -162,10 +162,10 @@
         console.log("Bangle1:", isB1);
         console.log("Bangle2:", isB2);
 
-        let normalFiles, storageFiles;
+        let storageFiles;
         console.log("Listing normal files...");
         Comms.reset()
-            .then(() => Comms.listFiles({sf:true}))
+            .then(() => Comms.listFiles({sf:false}))
             .then(f => {
             storageFiles = f;
             console.log(" - "+f.join(","));
