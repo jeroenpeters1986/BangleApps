@@ -165,23 +165,10 @@
         console.log("Bangle1:", isB1);
         console.log("Bangle2:", isB2);
 
-        let storageFiles;
-        console.log("Listing normal files...");
-        Comms.reset()
-            .then(() => {
-                console.log("reset done");
-                let promise = Promise.resolve();
-                console.log(promise);
-                promise = promise.then(() => {
-                    console.log("start");
-                    return Comms.readStorageFile("setting.json").then(data => {
-                        console.log("data");
-                        console.log(data);
-                        currentSettings = data;
-                    })
-                });
-                return promise;
-            }).catch(err => {
+        Comms.readStorageFile("setting.json").then(data => {
+            console.log(data);
+            currentSettings = data;
+        }).catch(err => {
             console.log('Backup failed: ' + err);
         });
     }
