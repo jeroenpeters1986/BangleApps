@@ -165,12 +165,10 @@
         let normalFiles, storageFiles;
         console.log("Listing normal files...");
         Comms.reset()
-            .then(() => Comms.showMessage("Hoi Jeroen!"))
             .then(() => Comms.listFiles({sf:true}))
             .then(f => {
             storageFiles = f;
             console.log(" - "+f.join(","));
-            let fileCount = storageFiles.length;
             let promise = Promise.resolve();
             if (storageFiles.length) {
                 storageFiles.forEach((filename,n) => {
@@ -182,7 +180,7 @@
             }
             return promise;
         }).then(content => {
-            console.log('Backup complete!', 'success');
+            console.log('Backup complete!');
         }).catch(err => {
             console.log('Backup failed: ' + err);
         });
