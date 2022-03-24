@@ -167,22 +167,20 @@
         let storageFiles;
         console.log("Listing normal files...");
         Comms.reset()
-            .then(() => Comms.listFiles({sf:false}))
-            .then(f => {
-            storageFiles = f;
-            let filename = 'setting.json';
-            let promise = Promise.resolve();
-            promise = promise.then(() => {
-                console.log(`Download ${filename}`);
-                return Comms.readStorageFile(filename).then(data => {
-                    console.log(filename, data);
-                    currentSettings = data;
+            .then(() => {
+                console.log("reset done");
+                let promise = Promise.resolve();
+                console.log(promise);
+                promise = promise.then(() => {
+                    console.log("start");
+                    return Comms.readStorageFile("setting.json").then(data => {
+                        console.log("data");
+                        console.log(data);
+                        currentSettings = data;
+                    })
                 });
-            });
-            return promise;
-        }).then(content => {
-            console.log('Backup complete!');
-        }).catch(err => {
+                return promise;
+            }).catch(err => {
             console.log('Backup failed: ' + err);
         });
     }
