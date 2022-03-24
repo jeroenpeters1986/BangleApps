@@ -7,6 +7,7 @@
   "tags": "tool,system",
   "supports": ["BANGLEJS","BANGLEJS2"],
   "readme": "README.md",
+  "interface": "interface.html",
   "storage": [
     {"name":"setting.app.js","url":"settings.js"},
     {"name":"setting.img","url":"settings-icon.js","evaluate":true}
