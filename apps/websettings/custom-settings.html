@@ -166,7 +166,7 @@
         console.log("Bangle1:", isB1);
         console.log("Bangle2:", isB2);
 
-        Comms.readStorageFile("setting.json").then(data => {
+        Comms.reset().then(() => Comms.readStorageFile("setting.json")).then(data => {
             console.log(data);
             currentSettings = data;
         }).catch(err => {
