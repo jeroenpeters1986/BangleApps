@@ -165,10 +165,24 @@
         let normalFiles, storageFiles;
         console.log("Listing normal files...");
         Comms.reset()
+            .then(() => Comms.showMessage("Hoi Jeroen!"))
             .then(() => Comms.listFiles({sf:true}))
             .then(f => {
-                console.log(f);
-                return true;
+            storageFiles = f;
+            console.log(" - "+f.join(","));
+            let fileCount = storageFiles.length;
+            let promise = Promise.resolve();
+            if (storageFiles.length) {
+                storageFiles.forEach((filename,n) => {
+                    promise = promise.then(() => {
+                        console.log(`Download ${filename}`);
+                        return Comms.readStorageFile(filename).then(data => console.log(filename,data));
+                    });
+                });
+            }
+            return promise;
+        }).then(content => {
+            console.log('Backup complete!', 'success');
         }).catch(err => {
             console.log('Backup failed: ' + err);
         });
