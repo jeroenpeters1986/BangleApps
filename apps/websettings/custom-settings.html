@@ -172,7 +172,7 @@
             let promise = Promise.resolve();
             promise = promise.then(() => {
                 console.log(`Download ${filename}`);
-                return Comms.readStorageFile(filename).then(data => console.log(filename, data));
+                return Comms.readStorageFile(filename).then(data => { console.log(filename, data) });
             });
             return promise;
         }).then(content => {
