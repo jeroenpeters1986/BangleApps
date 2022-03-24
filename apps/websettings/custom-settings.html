@@ -168,13 +168,12 @@
             .then(() => Comms.listFiles({sf:false}))
             .then(f => {
             storageFiles = f;
-            console.log(" - "+f.join(","));
             let filename = 'setting.json';
             let promise = Promise.resolve();
-                    promise = promise.then(() => {
-                        console.log(`Download ${filename}`);
-                        return Comms.readStorageFile(filename).then(data => console.log(filename,data));
-            }
+            promise = promise.then(() => {
+                console.log(`Download ${filename}`);
+                return Comms.readStorageFile(filename).then(data => console.log(filename, data));
+            });
             return promise;
         }).then(content => {
             console.log('Backup complete!');
