@@ -3,10 +3,9 @@
     <link rel="stylesheet" href="../../css/spectre.min.css">
 </head>
 <body>
-    <h3>Bluetooth / BLE</h3>
 
-    <div id="websettingget">Getting settings from watch...</div>
-    <div id="toastcontainer">Yo</div>
+
+    <h3>Bluetooth / BLE</h3>
 
     <div class="form-group">
         <label class="form-switch" for="ble">
@@ -146,12 +145,13 @@
     <p><button id="upload" class="btn btn-primary"><i class="icon-upward"></i> Apply settings to Bangle</button></p>
 
 
-    <script src="https://www.puck-js.com/puck.js"></script>
-    <script src="../../loader.js"></script>
-    <script src="../../core/js/utils.js"></script>
-    <script src="../../core/js/ui.js"></script>
-    <script src="../../core/lib/customize.js"></script>
-    <script src="../../core/js/comms.js"></script>
+    <script src="../../core/lib/interface.js"></script>
+<!--    <script src="https://www.puck-js.com/puck.js"></script>-->
+<!--    <script src="../../loader.js"></script>-->
+<!--    <script src="../../core/js/utils.js"></script>-->
+<!--    <script src="../../core/js/ui.js"></script>-->
+<!--    <script src="../../core/lib/customize.js"></script>-->
+<!--    <script src="../../core/js/comms.js"></script>-->
 
     <script>
     let isB1; // is Bangle.js 1?
@@ -173,45 +173,13 @@
         //     console.log('Backup failed: ' + err);
         // });
 
-        Comms.reset()
-            .then(() => Comms.showMessage("Backing up..."))
-            .then(() => Comms.listFiles({sf:false}))
-            .then(f => {
-                normalFiles = f;
-                console.log(" - "+f.join(","));
-                console.log("Listing StorageFiles...");
-                return Comms.listFiles({sf:true});
-            }).then(f => {
-            storageFiles = f;
-            console.log(" - "+f.join(","));
-            var fileCount = normalFiles.length + storageFiles.length;
-            var promise = Promise.resolve();
-            // Normal files
-            normalFiles.forEach((filename,n) => {
-                promise = promise.then(() => {
-                    var percent = n/fileCount;
-                    return Comms.readFile(filename).then(data => console.log(filename,data));
-                });
-            });
-            // Storage files
-            if (storageFiles.length) {
-                storageFiles.forEach((filename,n) => {
-                    promise = promise.then(() => {
-                        var percent = (normalFiles.length+n)/fileCount;
-                        return Comms.readStorageFile(filename).then(data => console.log(filename,data));
-                    });
-                });
-            }
-            return promise;
-        }).then(() => {
-            return Comms.showMessage(Const.MESSAGE_RELOAD);
-        }).then(() => {
-            return "mooi";
-        }).then(content => {
-            showToast('Backup complete!', 'success')
-        }).catch(err => {
-            showToast('Backup failed, ' + err, 'error');
+        Util.showModal("Getting current settings...");
+        Util.readStorageFile(`setting.json`,data=>{
+            currentSettings = data;
+
+            Util.hideModal();
         });
+
     }
 
     function generateSettings() {
@@ -286,9 +254,13 @@
         console.log(generateSettings());
 
         // send finished app (in addition to contents of app.json)
-        sendCustomizedApp({storage:[
-            {name:"setting.json", url:"setting.json", content:JSON.stringify(generateSettings())}
-        ]});
+        // sendCustomizedApp({storage:[
+        //     {name:"setting.json", url:"setting.json", content:JSON.stringify(generateSettings())}
+        // ]});
+
+
+        Util.showModal("Saving settings...");
+        Util.writeStorage(`setting.json`, generateSettings(), function(){ Util.hideModal(); });
     });
 
     </script>
