@@ -160,20 +160,35 @@
         console.log("Bangle1:", isB1);
         console.log("Bangle2:", isB2);
 
-        Comms.reset().
-        then(() => {
-            let promise = Promise.resolve();
 
-            promise = promise.then(() => {
-                return Comms.readFile(`setting.json`).then(data => {
-                    console.log(data);
-                    currentSettings = data;
+        var normalFiles, storageFiles;
+        console.log("Listing normal files...");
+        Comms.reset()
+            .then(() => Comms.showMessage("Backing up..."))
+            .then(() => Comms.listFiles({sf:true}))
+            .then(f => {
+            storageFiles = f;
+            console.log(" - "+f.join(","));
+            var fileCount = storageFiles.length;
+            var promise = Promise.resolve();
+            if (storageFiles.length) {
+                storageFiles.forEach((filename,n) => {
+                    promise = promise.then(() => {
+                        var percent = (normalFiles.length+n)/fileCount;
+                        console.log({title:`Download ${filename}`,sticky:true,min:percent,max:percent+(1/fileCount),percent:0});
+                        return Comms.readStorageFile(filename).then(data => console.log(filename,data));
+                    });
                 });
-            });
-
+            }
             return promise;
+        }).then(() => {
+            return "reload";
+        }).then(() => {
+            return "top";
+        }).then(content => {
+            console.log('Backup complete!', 'success');
         }).catch(err => {
-            console.log(err)
+            console.log('Backup failed, ' + err, 'error');
         });
     }
 
