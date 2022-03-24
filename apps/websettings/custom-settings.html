@@ -165,12 +165,52 @@
         isB1 = !isB2;
         console.log("Bangle1:", isB1);
         console.log("Bangle2:", isB2);
+        //
+        // Comms.reset().then(() => Comms.readStorageFile("setting.json")).then(data => {
+        //     console.log(data);
+        //     currentSettings = data;
+        // }).catch(err => {
+        //     console.log('Backup failed: ' + err);
+        // });
 
-        Comms.reset().then(() => Comms.readStorageFile("setting.json")).then(data => {
-            console.log(data);
-            currentSettings = data;
+        Comms.reset()
+            .then(() => Comms.showMessage("Backing up..."))
+            .then(() => Comms.listFiles({sf:false}))
+            .then(f => {
+                normalFiles = f;
+                console.log(" - "+f.join(","));
+                console.log("Listing StorageFiles...");
+                return Comms.listFiles({sf:true});
+            }).then(f => {
+            storageFiles = f;
+            console.log(" - "+f.join(","));
+            var fileCount = normalFiles.length + storageFiles.length;
+            var promise = Promise.resolve();
+            // Normal files
+            normalFiles.forEach((filename,n) => {
+                promise = promise.then(() => {
+                    var percent = n/fileCount;
+                    return Comms.readFile(filename).then(data => console.log(filename,data));
+                });
+            });
+            // Storage files
+            if (storageFiles.length) {
+                storageFiles.forEach((filename,n) => {
+                    promise = promise.then(() => {
+                        var percent = (normalFiles.length+n)/fileCount;
+                        return Comms.readStorageFile(filename).then(data => console.log(filename,data));
+                    });
+                });
+            }
+            return promise;
+        }).then(() => {
+            return Comms.showMessage(Const.MESSAGE_RELOAD);
+        }).then(() => {
+            return "mooi";
+        }).then(content => {
+            showToast('Backup complete!', 'success')
         }).catch(err => {
-            console.log('Backup failed: ' + err);
+            showToast('Backup failed, ' + err, 'error');
         });
     }
 
