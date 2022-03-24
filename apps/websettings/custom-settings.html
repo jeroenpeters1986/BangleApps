@@ -163,21 +163,18 @@
         Comms.reset().
         then(() => {
             let promise = Promise.resolve();
-            Progress.show({title:"Retrieving settings...",sticky:true});
 
             promise = promise.then(() => {
                 return Comms.readFile(`setting.json`).then(data => {
-                    Progress.hide({sticky: true});
+                    console.log(data);
                     currentSettings = data;
                 });
             });
 
             return promise;
         }).catch(err => {
-        Progress.hide({ sticky: true });
-        showToast('Backup failed, ' + err, 'error');
-    });
-
+            console.log(err)
+        });
     }
 
     function generateSettings() {
