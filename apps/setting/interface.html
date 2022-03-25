@@ -153,37 +153,7 @@
     let isB2; // is Bangle.js 2?
 
     let currentSettings = [];
-
-
     var dataElement = document.getElementById("dingen");
-
-    // Called when we know what device we're using
-    function onInit(device) {
-        isB2 = (device && device.id=="BANGLEJS2");
-        isB1 = !isB2;
-        console.log("Bangle1:", isB1);
-        console.log("Bangle2:", isB2);
-
-        dataElement.innerHTML = "";
-        //
-        // Comms.reset().then(() => Comms.readStorageFile("setting.json")).then(data => {
-        //     console.log(data);
-        //     currentSettings = data;
-        // }).catch(err => {
-        //     console.log('Backup failed: ' + err);
-        // });
-
-        Util.showModal("Getting current settings...");
-        console.log("Getting current settings...");
-        Util.readStorageFile(`setting.json`, data => {
-            currentSettings = data;
-
-            dataElement.innerHTML = JSON.stringify(data);
-            console.log(data);
-            Util.hideModal();
-        });
-
-    }
 
     function generateSettings() {
 
@@ -253,13 +223,44 @@
 
     // When the 'upload' button is clicked...
     document.getElementById("upload").addEventListener("click", function() {
-
         console.log(generateSettings());
-
         Util.showModal("Saving settings...");
         Util.writeStorage(`setting.json`, generateSettings(), function(){ Util.hideModal(); });
-
     });
+
+
+    function downloadTrack(trackid, callback) {
+        Util.showModal("Downloading Track...");
+        Util.readStorageFile(`setting.json`,data=>{
+            Util.hideModal();
+            var track = data;
+            callback(track);
+        });
+    }
+
+
+    // Called when we know what device we're using
+    function onInit(device) {
+        isB2 = (device && device.id=="BANGLEJS2");
+        isB1 = !isB2;
+        console.log("Bangle1:", isB1);
+        console.log("Bangle2:", isB2);
+
+        dataElement.innerHTML = "";
+
+        Util.showModal("Getting current settings...");
+        console.log("Getting current settings...");
+        Util.readStorageFile(`setting.json`, data => {
+            currentSettings = data;
+
+            dataElement.innerHTML = JSON.stringify(data);
+            console.log(data);
+            Util.hideModal();
+        });
+
+        let trackid = 1;
+        downloadTrack(trackid, track => console.log(track));
+    }
 
 </script>
 </body>
