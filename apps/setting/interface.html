@@ -168,11 +168,9 @@
         // });
 
         Util.showModal("Getting current settings...");
-        Util.readStorageFile(`setting.json`,data=>{
+        Util.readStorageFile('setting.json', data => {
             currentSettings = data;
-
-            console.log(currentSettings);
-
+            console.log(data);
             Util.hideModal();
         });
 
